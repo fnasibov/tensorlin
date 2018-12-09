@@ -1,0 +1,43 @@
+plugins {
+    id 'kotlin-multiplatform' version '1.3.10'
+}
+repositories {
+    mavenCentral()
+}
+def tensorflowHome = '/home/fnasibov/.konan/third-party/tensorflow'
+kotlin {
+    targets {
+
+        fromPreset(presets.linuxX64, 'linux')
+        configure([linux]) {
+            compilations.main {
+                outputKinds('EXECUTABLE')
+                entryPoint = 'tensorlin.main'
+                cinterops {
+                    tensorflow {
+                        defFile = file('/home/fnasibov/IdeaProjects/tensorlin/tensorflow.def')
+                    }
+                }
+            }
+
+        }
+    }
+    sourceSets {
+        linuxMain {
+        }
+        linuxTest {
+        }
+    }
+}
+
+task runProgram {
+    def buildType = 'release'
+    dependsOn "link${buildType.capitalize()}ExecutableLinux"
+    doLast {
+        def programFile = kotlin.targets.linux.compilations.main.getBinary('EXECUTABLE', buildType)
+        exec {
+            executable programFile
+            args ''
+        }
+    }
+}

@@ -1,0 +1,4 @@
+headers = /home/fnasibov/.konan/third-party/tensorflow/include/tensorflow/c/c_api.h
+
+compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+linkerOpts.linux = -L/home/fnasibov/.konan/third-party/tensorflow/lib -ltensorflow
